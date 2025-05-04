@@ -45,10 +45,8 @@ namespace BitSweep.Forms
 
         private void BeginSweep()
         {
-            string list = "";
-            foreach (string path in selectedDirectories)
-                list += path + "\n";
-            MessageBox.Show(list);
+            new CleaningForm(selectedDirectories).Show();
+            this.Hide();
         }
     }
 }
