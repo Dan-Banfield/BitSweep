@@ -5,6 +5,7 @@ namespace BitSweep.Forms
         public MainForm()
         {
             InitializeComponent();
+            new CleaningForm().Show();
         }
     }
 }
