@@ -39,7 +39,7 @@
             deliveryOptimisationFilesCheckBox = new CheckBox();
             systemLogFilesCheckBox = new CheckBox();
             minidumpsMemoryDumpsCheckBox = new CheckBox();
-            button1 = new Button();
+            sweepButton = new Button();
             SuspendLayout();
             // 
             // label1
@@ -60,6 +60,7 @@
             temporaryFilesCheckBox.Name = "temporaryFilesCheckBox";
             temporaryFilesCheckBox.Size = new Size(138, 25);
             temporaryFilesCheckBox.TabIndex = 1;
+            temporaryFilesCheckBox.Tag = "C:\\Windows\\Temp";
             temporaryFilesCheckBox.Text = "Temporary Files";
             checkBoxToolTip.SetToolTip(temporaryFilesCheckBox, "General temporary files created by Windows and apps.");
             temporaryFilesCheckBox.UseVisualStyleBackColor = true;
@@ -77,6 +78,7 @@
             // userTemporaryFilesCheckBox
             // 
             userTemporaryFilesCheckBox.AutoSize = true;
+            userTemporaryFilesCheckBox.Enabled = false;
             userTemporaryFilesCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             userTemporaryFilesCheckBox.Location = new Point(53, 103);
             userTemporaryFilesCheckBox.Name = "userTemporaryFilesCheckBox";
@@ -94,6 +96,7 @@
             windowsPrefetchFilesCheckBox.Name = "windowsPrefetchFilesCheckBox";
             windowsPrefetchFilesCheckBox.Size = new Size(190, 25);
             windowsPrefetchFilesCheckBox.TabIndex = 3;
+            windowsPrefetchFilesCheckBox.Tag = "C:\\Windows\\Prefetch";
             windowsPrefetchFilesCheckBox.Text = "Windows Prefetch Files";
             checkBoxToolTip.SetToolTip(windowsPrefetchFilesCheckBox, "Files that speed up app launching by caching data; can be cleared occasionally.");
             windowsPrefetchFilesCheckBox.UseVisualStyleBackColor = true;
@@ -106,6 +109,7 @@
             downloadedProgramFilesCheckBox.Name = "downloadedProgramFilesCheckBox";
             downloadedProgramFilesCheckBox.Size = new Size(217, 25);
             downloadedProgramFilesCheckBox.TabIndex = 4;
+            downloadedProgramFilesCheckBox.Tag = "C:\\Windows\\Downloaded Program Files";
             downloadedProgramFilesCheckBox.Text = "Downloaded Program Files\t";
             checkBoxToolTip.SetToolTip(downloadedProgramFilesCheckBox, "ActiveX controls and Java applets downloaded from the Internet.");
             downloadedProgramFilesCheckBox.UseVisualStyleBackColor = true;
@@ -118,6 +122,7 @@
             windowsUpdateCache.Name = "windowsUpdateCache";
             windowsUpdateCache.Size = new Size(194, 25);
             windowsUpdateCache.TabIndex = 5;
+            windowsUpdateCache.Tag = "C:\\Windows\\SoftwareDistribution\\Download";
             windowsUpdateCache.Text = "Windows Update Cache";
             checkBoxToolTip.SetToolTip(windowsUpdateCache, "Leftovers from Windows Updates.");
             windowsUpdateCache.UseVisualStyleBackColor = true;
@@ -130,6 +135,7 @@
             deliveryOptimisationFilesCheckBox.Name = "deliveryOptimisationFilesCheckBox";
             deliveryOptimisationFilesCheckBox.Size = new Size(215, 25);
             deliveryOptimisationFilesCheckBox.TabIndex = 6;
+            deliveryOptimisationFilesCheckBox.Tag = "C:\\Windows\\SoftwareDistribution\\DeliveryOptimization";
             deliveryOptimisationFilesCheckBox.Text = "Delivery Optimisation Files";
             checkBoxToolTip.SetToolTip(deliveryOptimisationFilesCheckBox, "Files used for update distribution.");
             deliveryOptimisationFilesCheckBox.UseVisualStyleBackColor = true;
@@ -142,6 +148,7 @@
             systemLogFilesCheckBox.Name = "systemLogFilesCheckBox";
             systemLogFilesCheckBox.Size = new Size(145, 25);
             systemLogFilesCheckBox.TabIndex = 7;
+            systemLogFilesCheckBox.Tag = "C:\\Windows\\Logs";
             systemLogFilesCheckBox.Text = "System Log Files";
             checkBoxToolTip.SetToolTip(systemLogFilesCheckBox, "Windows event and diagnostic logs.");
             systemLogFilesCheckBox.UseVisualStyleBackColor = true;
@@ -154,26 +161,28 @@
             minidumpsMemoryDumpsCheckBox.Name = "minidumpsMemoryDumpsCheckBox";
             minidumpsMemoryDumpsCheckBox.Size = new Size(228, 25);
             minidumpsMemoryDumpsCheckBox.TabIndex = 8;
+            minidumpsMemoryDumpsCheckBox.Tag = "C:\\Windows\\Minidump";
             minidumpsMemoryDumpsCheckBox.Text = "Minidumps, Memory Dumps";
             checkBoxToolTip.SetToolTip(minidumpsMemoryDumpsCheckBox, "Created during BSODs or crashes.");
             minidumpsMemoryDumpsCheckBox.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // sweepButton
             // 
-            button1.Font = new Font("Segoe UI Emoji", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button1.Location = new Point(65, 214);
-            button1.Name = "button1";
-            button1.Size = new Size(616, 51);
-            button1.TabIndex = 9;
-            button1.Text = "Sweep! \U0001f9f9";
-            button1.UseVisualStyleBackColor = true;
+            sweepButton.Font = new Font("Segoe UI Emoji", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            sweepButton.Location = new Point(65, 214);
+            sweepButton.Name = "sweepButton";
+            sweepButton.Size = new Size(616, 51);
+            sweepButton.TabIndex = 9;
+            sweepButton.Text = "Sweep! \U0001f9f9";
+            sweepButton.UseVisualStyleBackColor = true;
+            sweepButton.Click += sweepButton_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(720, 300);
-            Controls.Add(button1);
+            Controls.Add(sweepButton);
             Controls.Add(minidumpsMemoryDumpsCheckBox);
             Controls.Add(systemLogFilesCheckBox);
             Controls.Add(deliveryOptimisationFilesCheckBox);
@@ -207,6 +216,6 @@
         private CheckBox deliveryOptimisationFilesCheckBox;
         private CheckBox systemLogFilesCheckBox;
         private CheckBox minidumpsMemoryDumpsCheckBox;
-        private Button button1;
+        private Button sweepButton;
     }
 }
