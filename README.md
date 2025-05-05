@@ -34,4 +34,4 @@ Free up disk space, boost performance. 💨
 
 ## 📥 Download
 
-👉 [**Click here to download the latest setup**]([https://your-download-link.com](https://github.com/Dan-Banfield/BitSweep/releases/tag/Release))
+👉 [**Click here to download the latest setup**](https://github.com/Dan-Banfield/BitSweep/releases/tag/Release)
