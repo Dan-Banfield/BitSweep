@@ -3,6 +3,8 @@
 **BitSweep** is a powerful, quick and safe temporary file cleaner for Windows 11 *and possibly Windows 10*.  
 Free up disk space, boost performance. 💨
 
+![BitSweep UI Screenshot](https://github.com/Dan-Banfield/BitSweep/blob/master/Images/BitSweep%20UI.png?raw=true)
+
 ---
 
 ## 🚀 Features
