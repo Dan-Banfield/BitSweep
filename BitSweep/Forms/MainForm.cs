@@ -30,17 +30,26 @@ namespace BitSweep.Forms
 
         private void sweepButton_Click(object sender, EventArgs e)
         {
-            PopulateDirectoriesList();
-            BeginSweep();
+            if (!PopulateDirectoriesList())
+            {
+                MessageBox.Show("No temporary files are selected for removal.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            if (MessageBox.Show("Proceed with sweeping temporary files?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) { BeginSweep(); }
         }
 
-        private void PopulateDirectoriesList()
+        private bool PopulateDirectoriesList()
         {
+            bool checkBoxChecked = false;
             foreach (CheckBox checkBox in directoryCheckBoxes)
             {
                 if (checkBox.Checked && checkBox.Tag is string path)
+                {
                     selectedDirectories.Add(path);
+                    checkBoxChecked = true;
+                }
             }
+            return checkBoxChecked;
         }
 
         private void BeginSweep()
