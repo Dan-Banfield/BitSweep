@@ -2,31 +2,17 @@ namespace BitSweep.Forms
 {
     public partial class MainForm : Form
     {
-        // A list to store the temporary file directories as selected by checkboxes.
+        // A list to store the temporary file directories for sweeping, as selected by checkboxes.
         private List<string> selectedDirectories = new List<string>();
 
+        // Stores check boxes for easy iteration.
         private List<CheckBox> directoryCheckBoxes;
 
         public MainForm()
-        {
-            InitializeComponent();
-            InitialiseCheckBoxList();
-        }
+            => InitializeComponent();
 
-        private void InitialiseCheckBoxList()
-        {
-            directoryCheckBoxes = new List<CheckBox>
-            {
-                temporaryFilesCheckBox,
-                userTemporaryFilesCheckBox,
-                windowsPrefetchFilesCheckBox,
-                downloadedProgramFilesCheckBox,
-                windowsUpdateCache,
-                deliveryOptimisationFilesCheckBox,
-                systemLogFilesCheckBox,
-                minidumpsMemoryDumpsCheckBox
-            };
-        }
+        private void MainForm_Load(object sender, EventArgs e)
+            => InitialiseCheckBoxList();
 
         private void sweepButton_Click(object sender, EventArgs e)
         {
@@ -37,6 +23,9 @@ namespace BitSweep.Forms
             }
             if (MessageBox.Show("Proceed with sweeping temporary files?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) { BeginSweep(); }
         }
+
+        private void InitialiseCheckBoxList()
+            => directoryCheckBoxes = new List<CheckBox> { temporaryFilesCheckBox, userTemporaryFilesCheckBox, windowsPrefetchFilesCheckBox, downloadedProgramFilesCheckBox, windowsUpdateCache, deliveryOptimisationFilesCheckBox, systemLogFilesCheckBox, minidumpsMemoryDumpsCheckBox };
 
         private bool PopulateDirectoriesList()
         {

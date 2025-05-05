@@ -28,35 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            checkBoxToolTip = new ToolTip(components);
             progressBar = new ProgressBar();
+            label1 = new Label();
+            progressPercentageLabel = new Label();
             SuspendLayout();
-            // 
-            // checkBoxToolTip
-            // 
-            checkBoxToolTip.AutomaticDelay = 100;
-            checkBoxToolTip.AutoPopDelay = 0;
-            checkBoxToolTip.BackColor = Color.White;
-            checkBoxToolTip.InitialDelay = 100;
-            checkBoxToolTip.ReshowDelay = 20;
-            checkBoxToolTip.ToolTipIcon = ToolTipIcon.Info;
-            checkBoxToolTip.ToolTipTitle = "Information";
             // 
             // progressBar
             // 
             progressBar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar.Location = new Point(12, 13);
+            progressBar.Location = new Point(12, 56);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(696, 23);
+            progressBar.Size = new Size(441, 23);
             progressBar.Style = ProgressBarStyle.Continuous;
             progressBar.TabIndex = 0;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 19);
+            label1.Name = "label1";
+            label1.Size = new Size(228, 25);
+            label1.TabIndex = 1;
+            label1.Text = "Do not close this window!";
+            // 
+            // progressPercentageLabel
+            // 
+            progressPercentageLabel.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            progressPercentageLabel.Location = new Point(392, 40);
+            progressPercentageLabel.Name = "progressPercentageLabel";
+            progressPercentageLabel.Size = new Size(61, 13);
+            progressPercentageLabel.TabIndex = 2;
+            progressPercentageLabel.Text = "0%";
+            progressPercentageLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
             // CleaningForm
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(720, 48);
+            ClientSize = new Size(465, 91);
+            Controls.Add(progressPercentageLabel);
+            Controls.Add(label1);
             Controls.Add(progressBar);
             Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -69,10 +80,12 @@
             TopMost = true;
             Load += CleaningForm_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-        private ToolTip checkBoxToolTip;
         private ProgressBar progressBar;
+        private Label label1;
+        private Label progressPercentageLabel;
     }
 }

@@ -2,29 +2,40 @@
 {
     internal class Sweeper
     {
+        #region Events
+
         internal delegate void FileSweepedEventHandler(object sender, EventArgs e);
         internal event FileSweepedEventHandler FileSweeped;
 
         internal delegate void FileSweepFinishedEventHandler(object sender, EventArgs e);
         internal event FileSweepFinishedEventHandler FileSweepFinished;
 
-        internal int CalculateFileCount(List<string> directoryList)
+        #endregion
+
+        private List<string> directories;
+
+        internal Sweeper(List<string> directories)
+            => this.directories = directories;
+
+        internal async Task<int> CalculateFileCountAsync()
         {
             int count = 0;
-
-            foreach (string directory in directoryList)
+            await Task.Run(() => 
             {
-                if (Directory.Exists(directory))
-                    count += Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Length;
-            }
+                foreach (string directory in directories)
+                {
+                    if (Directory.Exists(directory))
+                        count += Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Length;
+                }
+            });
             return count;
         }
 
-        internal void SweepDirectories(List<string> directoryList)
+        internal async Task SweepDirectoriesAsync()
         {
-            Task.Run(() => 
+            await Task.Run(() => 
             {
-                foreach (string directory in directoryList)
+                foreach (string directory in directories)
                 {
                     if (Directory.Exists(directory))
                     {
@@ -37,7 +48,7 @@
                                 File.Delete(file);
                                 FileSweeped?.Invoke(this, EventArgs.Empty);
                             }
-                            catch { }
+                            catch { /* TODO: handle exceptions. */ }
                         }
                     }
                 }

@@ -4,14 +4,19 @@ namespace BitSweep.Forms
 {
     public partial class CleaningForm : Form
     {
+        private List<string> directoriesToBeSweeped;
+
         public CleaningForm(List<string> directoriesToClean)
         {
             InitializeComponent();
-            InitialiseCleaningSequence(directoriesToClean);
+            directoriesToBeSweeped = directoriesToClean;
         }
 
         private void CleaningForm_Load(object sender, EventArgs e)
-            => LoadingTitleBehaviour();
+        {
+            LoadingTitleBehaviour();
+            InitialiseCleaningSequence();
+        }
 
         private void LoadingTitleBehaviour()
         {
@@ -21,40 +26,40 @@ namespace BitSweep.Forms
             {
                 while (true) 
                 {
-                    await UpdateWindowTitleAsync("BitSweep — Cleaning"); await Task.Delay(delayMs);
-                    await UpdateWindowTitleAsync("BitSweep — Cleaning."); await Task.Delay(delayMs);
-                    await UpdateWindowTitleAsync("BitSweep — Cleaning.."); await Task.Delay(delayMs);
-                    await UpdateWindowTitleAsync("BitSweep — Cleaning..."); await Task.Delay(delayMs);
+                    UpdateWindowTitleAsync("BitSweep — Cleaning"); await Task.Delay(delayMs);
+                    UpdateWindowTitleAsync("BitSweep — Cleaning."); await Task.Delay(delayMs);
+                    UpdateWindowTitleAsync("BitSweep — Cleaning.."); await Task.Delay(delayMs);
+                    UpdateWindowTitleAsync("BitSweep — Cleaning..."); await Task.Delay(delayMs);
                 }
             });
         }
 
-        private async Task UpdateWindowTitleAsync(string title)
+        private void UpdateWindowTitleAsync(string title)
         {
+            // Marshall update back to UI thread to avoid issue.
             if (InvokeRequired)
             {
-                await Task.Run(() => Invoke((Action)(() => Text = title)));
+                Invoke((Action)(() => Text = title));
                 return;
             }
             Text = title;
         }
 
-        private void InitialiseCleaningSequence(List<string> directories)
+        private async void InitialiseCleaningSequence()
         {
-            Sweeper sweeper = new Sweeper();
+            Sweeper sweeper = new Sweeper(directoriesToBeSweeped);
 
             sweeper.FileSweeped += Sweeper_FileSweeped;
             sweeper.FileSweepFinished += Sweeper_FileSweepFinished;
 
-            int files = sweeper.CalculateFileCount(directories);
+            int files = await sweeper.CalculateFileCountAsync();
             progressBar.Maximum = files;
 
-            sweeper.SweepDirectories(directories);
+            await sweeper.SweepDirectoriesAsync();
         }
 
         private void Sweeper_FileSweeped(object sender, EventArgs e)
         {
-            //Marshall update back to UI thread to avoid issue.
             if (InvokeRequired)
             {
                 Invoke(new Action(() => Sweeper_FileSweeped(sender, e)));
@@ -62,19 +67,19 @@ namespace BitSweep.Forms
             }
 
             progressBar.Value = Math.Min(progressBar.Value + 1, progressBar.Maximum);
+            int percent = (int)((progressBar.Value - progressBar.Minimum) * 100.0 / (progressBar.Maximum - progressBar.Minimum));
+            progressPercentageLabel.Text = $"{percent}%";
         }
 
-        private async void Sweeper_FileSweepFinished(object sender, EventArgs e)
+        private void Sweeper_FileSweepFinished(object sender, EventArgs e)
         {
-            //Marshall update back to UI thread to avoid issue.
             if (InvokeRequired)
             {
                 Invoke(new Action(() => Sweeper_FileSweepFinished(sender, e)));
                 return;
             }
-
             progressBar.Value = progressBar.Maximum;
-            await Task.Delay(2000);
+            progressPercentageLabel.Text = "100%";
 
             MessageBox.Show("Files finished sweeping successfully!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.Exit();

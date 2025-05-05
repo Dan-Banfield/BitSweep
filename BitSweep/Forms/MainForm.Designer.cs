@@ -200,6 +200,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "BitSweep";
+            Load += MainForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
