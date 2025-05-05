@@ -1,3 +1,5 @@
+using BitSweep.Helpers;
+
 namespace BitSweep.Forms
 {
     public partial class MainForm : Form
@@ -18,10 +20,10 @@ namespace BitSweep.Forms
         {
             if (!PopulateDirectoriesList())
             {
-                MessageBox.Show("No temporary files are selected for removal.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Utilities.ShowInformation("No temporary files are selected for sweeping.");
                 return;
             }
-            if (MessageBox.Show("Proceed with sweeping temporary files?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) { BeginSweep(); }
+            if (Utilities.AskQuestion("Proceed with sweeping temporary files?") == DialogResult.Yes) { BeginSweep(); }
         }
 
         private void InitialiseCheckBoxList()

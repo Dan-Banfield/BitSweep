@@ -1,12 +1,17 @@
 using BitSweep.Core;
+using BitSweep.Helpers;
 using System.Diagnostics;
 
 namespace BitSweep.Forms
 {
     public partial class CleaningForm : Form
     {
+        #region Local Variables
+
         private List<string> directoriesToBeSweeped;
         private long totalBytesFreed = 0;
+
+        #endregion
 
         public CleaningForm(List<string> directoriesToClean)
         {
@@ -54,8 +59,7 @@ namespace BitSweep.Forms
             sweeper.FileSweeped += Sweeper_FileSweeped;
             sweeper.FileSweepFinished += Sweeper_FileSweepFinished;
 
-            int files = await sweeper.CalculateFileCountAsync();
-            progressBar.Maximum = files;
+            progressBar.Maximum = await sweeper.CalculateFileCountAsync();
 
             await sweeper.SweepDirectoriesAsync();
         }
@@ -67,12 +71,8 @@ namespace BitSweep.Forms
                 Invoke(new Action(() => Sweeper_FileSweeped(sender, e)));
                 return;
             }
-
             totalBytesFreed += e.FileSize;
-            progressBar.Value = Math.Min(progressBar.Value + 1, progressBar.Maximum);
-            int percent = (int)((progressBar.Value - progressBar.Minimum) * 100.0 / (progressBar.Maximum - progressBar.Minimum));
-            progressPercentageLabel.Text = $"{percent}%";
-            deletingLabel.Text = $"Deleting: {e.FileName}";
+            UpdateDisplayValues(e.FileName);
         }
 
         private void Sweeper_FileSweepFinished(object sender, EventArgs e)
@@ -82,11 +82,33 @@ namespace BitSweep.Forms
                 Invoke(new Action(() => Sweeper_FileSweepFinished(sender, e)));
                 return;
             }
+
+            FinaliseDisplayValues();
+            ShowSweepResult();
+
+            QueryRestart();
+        }
+
+        private void UpdateDisplayValues(string fileName)
+        {
+            progressBar.Value = Math.Min(progressBar.Value + 1, progressBar.Maximum);
+            progressPercentageLabel.Text = $"{(int)((progressBar.Value - progressBar.Minimum) * 100.0 / (progressBar.Maximum - progressBar.Minimum))}%";
+            deletingLabel.Text = $"Deleting: {fileName}";
+        }
+
+        private void FinaliseDisplayValues()
+        {
             progressBar.Value = progressBar.Maximum;
             progressPercentageLabel.Text = "100%";
             deletingLabel.Text = "Done!";
+        }
 
-            if (MessageBox.Show($"{FormatBytes(totalBytesFreed)} of temporary files deleted!\n\nRECOMMENDED: would you like to restart your PC? This helps to clean any residual files.", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        private void ShowSweepResult()
+            => Utilities.ShowInformation($"{Utilities.FormatBytes(totalBytesFreed)} of temporary files sweeped!");
+
+        private void QueryRestart()
+        {
+            if (Utilities.AskQuestion("RECOMMENDED: restart your PC? This is recommended after cleaning temporary files.") == DialogResult.Yes)
             {
                 RestartPC();
                 return;
@@ -103,19 +125,6 @@ namespace BitSweep.Forms
                 CreateNoWindow = true,
                 UseShellExecute = false
             });
-        }
-
-        private string FormatBytes(long bytes)
-        {
-            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
-            double len = bytes;
-            int order = 0;
-            while (len >= 1024 && order < sizes.Length - 1)
-            {
-                order++;
-                len /= 1024;
-            }
-            return $"{len:0.##} {sizes[order]}";
         }
     }
 }
