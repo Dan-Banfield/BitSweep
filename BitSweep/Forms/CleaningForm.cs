@@ -6,6 +6,7 @@ namespace BitSweep.Forms
     public partial class CleaningForm : Form
     {
         private List<string> directoriesToBeSweeped;
+        private long totalBytesFreed = 0;
 
         public CleaningForm(List<string> directoriesToClean)
         {
@@ -67,6 +68,7 @@ namespace BitSweep.Forms
                 return;
             }
 
+            totalBytesFreed += e.FileSize;
             progressBar.Value = Math.Min(progressBar.Value + 1, progressBar.Maximum);
             int percent = (int)((progressBar.Value - progressBar.Minimum) * 100.0 / (progressBar.Maximum - progressBar.Minimum));
             progressPercentageLabel.Text = $"{percent}%";
@@ -84,7 +86,7 @@ namespace BitSweep.Forms
             progressPercentageLabel.Text = "100%";
             deletingLabel.Text = "Done!";
 
-            if (MessageBox.Show("Files finished sweeping successfully!\n\nRECOMMENDED: would you like to restart your PC? This helps to clean any residual files.", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show($"{FormatBytes(totalBytesFreed)} of temporary files deleted!\n\nRECOMMENDED: would you like to restart your PC? This helps to clean any residual files.", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 RestartPC();
                 return;
@@ -101,6 +103,19 @@ namespace BitSweep.Forms
                 CreateNoWindow = true,
                 UseShellExecute = false
             });
+        }
+
+        private string FormatBytes(long bytes)
+        {
+            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+            double len = bytes;
+            int order = 0;
+            while (len >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                len /= 1024;
+            }
+            return $"{len:0.##} {sizes[order]}";
         }
     }
 }

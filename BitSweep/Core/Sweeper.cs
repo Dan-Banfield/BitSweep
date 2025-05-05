@@ -45,8 +45,9 @@
                         {
                             try
                             {
+                                long size = new FileInfo(file).Length;
                                 File.Delete(file);
-                                FileSweeped?.Invoke(this, new FileSweepedEventArgs(Path.GetFileName(file)));
+                                FileSweeped?.Invoke(this, new FileSweepedEventArgs(Path.GetFileName(file), size));
                             }
                             catch { /* TODO: handle exceptions. */ }
                         }
@@ -60,8 +61,12 @@
     internal class FileSweepedEventArgs : EventArgs
     {
         internal string FileName { get; }
+        internal long FileSize { get; }
 
-        internal FileSweepedEventArgs(string fileName)
-            => FileName = fileName;
+        internal FileSweepedEventArgs(string fileName, long fileSize)
+        {
+            FileName = fileName;
+            FileSize = fileSize;
+        }
     }
 }

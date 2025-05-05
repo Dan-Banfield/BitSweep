@@ -44,13 +44,14 @@
             // 
             // deletingLabel
             // 
-            deletingLabel.AutoSize = true;
+            deletingLabel.AutoEllipsis = true;
             deletingLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             deletingLabel.Location = new Point(12, 12);
             deletingLabel.Name = "deletingLabel";
-            deletingLabel.Size = new Size(84, 21);
+            deletingLabel.Size = new Size(352, 21);
             deletingLabel.TabIndex = 1;
             deletingLabel.Text = "Deleting: ...";
+            deletingLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // progressPercentageLabel
             // 
@@ -82,7 +83,6 @@
             TopMost = true;
             Load += CleaningForm_Load;
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
