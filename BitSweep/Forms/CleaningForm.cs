@@ -1,4 +1,5 @@
 using BitSweep.Core;
+using System.Diagnostics;
 
 namespace BitSweep.Forms
 {
@@ -81,8 +82,23 @@ namespace BitSweep.Forms
             progressBar.Value = progressBar.Maximum;
             progressPercentageLabel.Text = "100%";
 
-            MessageBox.Show("Files finished sweeping successfully!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (MessageBox.Show("Files finished sweeping successfully!\n\nRECOMMENDED: would you like to restart your PC? This helps to clean any residual files.", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                RestartPC();
+                return;
+            }
             Application.Exit();
+        }
+
+        private void RestartPC()
+        {
+            Process.Start(new ProcessStartInfo 
+            {
+                FileName = "shutdown",
+                Arguments = "/r /t 0",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            });
         }
     }
 }
