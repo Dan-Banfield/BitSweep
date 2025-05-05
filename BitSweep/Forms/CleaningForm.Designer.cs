@@ -30,32 +30,32 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CleaningForm));
             progressBar = new ProgressBar();
-            label1 = new Label();
+            deletingLabel = new Label();
             progressPercentageLabel = new Label();
             SuspendLayout();
             // 
             // progressBar
             // 
-            progressBar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar.Location = new Point(12, 56);
+            progressBar.Location = new Point(12, 38);
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(441, 23);
             progressBar.Style = ProgressBarStyle.Continuous;
             progressBar.TabIndex = 0;
             // 
-            // label1
+            // deletingLabel
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(12, 19);
-            label1.Name = "label1";
-            label1.Size = new Size(228, 25);
-            label1.TabIndex = 1;
-            label1.Text = "Do not close this window!";
+            deletingLabel.AutoSize = true;
+            deletingLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            deletingLabel.Location = new Point(12, 12);
+            deletingLabel.Name = "deletingLabel";
+            deletingLabel.Size = new Size(84, 21);
+            deletingLabel.TabIndex = 1;
+            deletingLabel.Text = "Deleting: ...";
             // 
             // progressPercentageLabel
             // 
             progressPercentageLabel.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            progressPercentageLabel.Location = new Point(392, 40);
+            progressPercentageLabel.Location = new Point(392, 18);
             progressPercentageLabel.Name = "progressPercentageLabel";
             progressPercentageLabel.Size = new Size(61, 13);
             progressPercentageLabel.TabIndex = 2;
@@ -66,9 +66,9 @@
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(465, 91);
+            ClientSize = new Size(465, 70);
             Controls.Add(progressPercentageLabel);
-            Controls.Add(label1);
+            Controls.Add(deletingLabel);
             Controls.Add(progressBar);
             Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -87,7 +87,7 @@
 
         #endregion
         private ProgressBar progressBar;
-        private Label label1;
+        private Label deletingLabel;
         private Label progressPercentageLabel;
     }
 }

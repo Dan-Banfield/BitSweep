@@ -59,7 +59,7 @@ namespace BitSweep.Forms
             await sweeper.SweepDirectoriesAsync();
         }
 
-        private void Sweeper_FileSweeped(object sender, EventArgs e)
+        private void Sweeper_FileSweeped(object sender, FileSweepedEventArgs e)
         {
             if (InvokeRequired)
             {
@@ -70,6 +70,7 @@ namespace BitSweep.Forms
             progressBar.Value = Math.Min(progressBar.Value + 1, progressBar.Maximum);
             int percent = (int)((progressBar.Value - progressBar.Minimum) * 100.0 / (progressBar.Maximum - progressBar.Minimum));
             progressPercentageLabel.Text = $"{percent}%";
+            deletingLabel.Text = $"Deleting: {e.FileName}";
         }
 
         private void Sweeper_FileSweepFinished(object sender, EventArgs e)
@@ -81,6 +82,7 @@ namespace BitSweep.Forms
             }
             progressBar.Value = progressBar.Maximum;
             progressPercentageLabel.Text = "100%";
+            deletingLabel.Text = "Done!";
 
             if (MessageBox.Show("Files finished sweeping successfully!\n\nRECOMMENDED: would you like to restart your PC? This helps to clean any residual files.", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {

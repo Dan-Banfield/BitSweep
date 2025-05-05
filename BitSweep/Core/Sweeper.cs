@@ -4,7 +4,7 @@
     {
         #region Events
 
-        internal delegate void FileSweepedEventHandler(object sender, EventArgs e);
+        internal delegate void FileSweepedEventHandler(object sender, FileSweepedEventArgs e);
         internal event FileSweepedEventHandler FileSweeped;
 
         internal delegate void FileSweepFinishedEventHandler(object sender, EventArgs e);
@@ -46,7 +46,7 @@
                             try
                             {
                                 File.Delete(file);
-                                FileSweeped?.Invoke(this, EventArgs.Empty);
+                                FileSweeped?.Invoke(this, new FileSweepedEventArgs(Path.GetFileName(file)));
                             }
                             catch { /* TODO: handle exceptions. */ }
                         }
@@ -55,5 +55,13 @@
             });
             FileSweepFinished?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    internal class FileSweepedEventArgs : EventArgs
+    {
+        internal string FileName { get; }
+
+        internal FileSweepedEventArgs(string fileName)
+            => FileName = fileName;
     }
 }
